@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/94097172e7.js" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1 class="display-4 text-center">
+            <i class="fa-solid fa-book-open"></i> My <span class="text-primary">Book</span>list
+        </h1>
+        <form id="book-form">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title">
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" id="author">
+            </div>
+            <div class="form-group">
+                <label for="isbn">ISBN#</label>
+                <input type="number" class="form-control" id="isbn">
+            </div>
+            <div class="form-group">
+                <label for="recommend">Recommended by:</label>
+                <input type="text" class="form-control" id="recom">
+            </div>
+            <input type="submit" value="Add Book" class="btn btn-primary">
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN#</th>
+                    <th>Recommended</th>
+                </tr>
+            </thead>
+            <tbody id="booklist">
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+    </script>
+</body>
+
+</html>
