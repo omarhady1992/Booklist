@@ -12,19 +12,7 @@ class Book {
 
 class UI {
     static DisplayBooks() {
-        const books = [{
-                title: "title 1",
-                author: "author 1",
-                isbn: "12345",
-                recby: "Someone 1"
-            },
-            {
-                title: "title 1",
-                author: "author 1",
-                isbn: "12345",
-                recby: "Someone 1"
-            }
-        ];
+        const books = [];
         const storedbooks = books;
         storedbooks.forEach((book) => UI.AddBookToList(book));
 
@@ -50,6 +38,17 @@ class UI {
         document.querySelector('#recom').value = '';
     }
 
+    static showAlert(message, status) {
+        const div = document.createElement('div');
+        div.appendChild(document.createTextNode(message));
+        div.className = `alert alert-${status}`;
+        const container = document.querySelector('.container');
+        const form = document.querySelector('#book-form');
+        container.insertBefore(div, form);
+
+        setTimeout(() => document.querySelector('.alert').remove(), 2000);
+    }
+
     static DeleteBook(el) {
         el.parentElement.parentElement.remove();
     }
@@ -63,8 +62,8 @@ class UI {
 
 // Event listener to grab submissions   
 document.addEventListener('DOMContentLoaded', UI.DisplayBooks);
-//Submission
 
+//Submission
 document.querySelector('#book-form').addEventListener('submit', (e) => {
 
     //Prevent default
@@ -75,6 +74,13 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
     const author = document.querySelector('#author').value;
     const isbn = document.querySelector('#isbn').value;
     const recby = document.querySelector('#recom').value;
+
+    //Validate
+    if (title === '' || author === '' || isbn === '') {
+        UI.showAlert('please fill all required fields', 'danger');
+    } else {
+        UI.showAlert('Book Submitted', 'success');
+    }
 
     //Instantiate book
     const book = new Book(title, author, isbn, recby);
