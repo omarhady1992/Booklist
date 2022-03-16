@@ -12,8 +12,7 @@ class Book {
 
 class UI {
     static DisplayBooks() {
-        const books = [];
-        const storedbooks = books;
+        const storedbooks = Store.getBooks();
         storedbooks.forEach((book) => UI.AddBookToList(book));
 
     }
@@ -56,41 +55,79 @@ class UI {
 
 }
 
+//Storage class
+class Store {
+    static getBooks() {
+        let storedbooks;
+        if (localStorage.getItem('storedbooks') === null) {
+            storedbooks = [];
+        } else {
+            storedbooks = JSON.parse(localStorage.getItem('storedbooks');
+            }
+            return storedbooks;
+        }
 
+        static storebook(book) {
+            const storedbooks = Store.getBooks();
 
-//Event Listeners
+            storedbooks.push(book);
 
-// Event listener to grab submissions   
-document.addEventListener('DOMContentLoaded', UI.DisplayBooks);
+            localStorage.setItem('storedbooks', JSON.stringify(storedbooks));
+        }
 
-//Submission
-document.querySelector('#book-form').addEventListener('submit', (e) => {
+        static removeBook(isbn) {
+            const storedbooks = localStorage.getItem('storedbooks');
+            storedbooks.forEach((book, index) => {
+                if (book.isbn === isbn) {
+                    storedbooks.splice(index, 1);
+                }
+            });
+            localStorage.setItem('storedbooks', JSON.stringify(storedbooks));
 
-    //Prevent default
-    e.preventDefault();
+        }
 
-    //Grab Values
-    const title = document.querySelector('#title').value;
-    const author = document.querySelector('#author').value;
-    const isbn = document.querySelector('#isbn').value;
-    const recby = document.querySelector('#recom').value;
-
-    //Validate
-    if (title === '' || author === '' || isbn === '') {
-        UI.showAlert('please fill all required fields', 'danger');
-    } else {
-        UI.showAlert('Book Submitted', 'success');
     }
 
-    //Instantiate book
-    const book = new Book(title, author, isbn, recby);
 
-    UI.AddBookToList(book);
-    UI.ClearFields();
-});
 
-//Remove A book
+    //Event Listeners
 
-document.querySelector("#booklist").addEventListener('click', (e) => {
-    UI.DeleteBook(e.target);
-})
+    // Event listener to grab submissions   
+    document.addEventListener('DOMContentLoaded', UI.DisplayBooks);
+
+    //Submission
+    document.querySelector('#book-form').addEventListener('submit', (e) => {
+
+        //Prevent default
+        e.preventDefault();
+
+        //Grab Values
+        const title = document.querySelector('#title').value;
+        const author = document.querySelector('#author').value;
+        const isbn = document.querySelector('#isbn').value;
+        const recby = document.querySelector('#recom').value;
+
+        //Validate
+        if (title === '' || author === '' || isbn === '') {
+            UI.showAlert('please fill all required fields', 'danger');
+        } else {
+            UI.showAlert('Book Submitted', 'success');
+        }
+
+        //Instantiate book
+        const book = new Book(title, author, isbn, recby);
+        //Store Book
+        Store.storebook(book);
+        //Add book to table
+        UI.AddBookToList(book);
+        //Clear Fields
+        UI.ClearFields();
+    });
+
+    //Remove A book From Storage and UI
+
+    document.querySelector("#booklist").addEventListener('click', (e) => {
+        UI.DeleteBook(e.target);
+
+        Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+    })
